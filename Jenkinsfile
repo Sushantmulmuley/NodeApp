@@ -1,5 +1,12 @@
 pipeline {
     agent any
+
+    environment{
+        EC2_USER = "ubuntu"
+        EC2_HOST = "13.233.100.12"
+        SSH_CREDENTIAL_ID = "ec2-ssh-key"
+    }
+
     stages {
         stage("Build") {
             steps {
@@ -10,11 +17,19 @@ pipeline {
             }
         }    
         stage("Deploy"){
-            steps{
-                echo "Starting Deployment on EC2"
-                sh "scp -r -o strictCheckingOfKey=No ./dist/* /home/ubuntu/node-app/"
-                sh "npm start"
-                echo "Deployment Done"
+            steps {
+                echo 'Starting Deployment on EC2...'
+                // Use withCredentials to inject SSH private key
+                sshagent(['ec2-ssh-key']) {
+                sh '''
+
+                echo "Copying build artifacts to EC2"
+                scp -o StrictHostKeyChecking=no -r dist/ ubuntu@13.233.100.12:/var/www/html
+                echo "restarting web server on ec2"
+                echo "Starting development on EC2"
+'''
+                }
+                echo "Deployment Completed"
             }
         }
     }
