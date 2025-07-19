@@ -24,9 +24,9 @@ pipeline {
                 sh '''
 
                 echo "Copying build artifacts to EC2"
-                scp -o StrictHostKeyChecking=no -r dist/ ubuntu@13.233.100.12:/var/www/html
+                scp -o StrictHostKeyChecking=no -r dist/ /var/www/html
                 echo "restarting web server on ec2"
-                echo "Starting development on EC2"
+                sudo systemctl restart again
 '''
                 }
                 echo "Deployment Completed"
