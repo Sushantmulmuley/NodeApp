@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        EC2_HOST = "3.7.66.180"
+        EC2_HOST = "15.207.247.121"
         SSH_CREDENTIAL_ID = "ubuntukey"
         REMOTE_USER = "ubuntu"
         REMOTE_PATH = "/home/ubuntu/app"
